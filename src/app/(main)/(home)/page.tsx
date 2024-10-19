@@ -1,7 +1,7 @@
 import Hero from "@/components/home/Hero";
 import RoomCard from "@/components/home/RoomCard";
 
-const page: React.FC = () => {
+const HomePage: React.FC = () => {
   return (
     <>
       <Hero />
@@ -12,4 +12,4 @@ const page: React.FC = () => {
   );
 };
 
-export default page;
+export default HomePage;
