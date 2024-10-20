@@ -1,6 +1,8 @@
+import Link from "next/link";
+
 const Logo: React.FC = () => {
   return (
-    <div className="flex items-center space-x-2">
+    <Link href="/" className="flex items-center space-x-2">
       {/* SVG Logo */}
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -13,7 +15,7 @@ const Logo: React.FC = () => {
 
       {/* Hotel Name */}
       <span className="text-md md:text-2xl font-bold text-white">Roomzy</span>
-    </div>
+    </Link>
   );
 };
 
