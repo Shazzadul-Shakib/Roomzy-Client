@@ -5,8 +5,14 @@ const HomePage: React.FC = () => {
   return (
     <>
       <Hero />
-      <section className="mx-auto my-10 grid w-[90%] grid-cols-1 justify-items-center gap-10 md:my-14 md:grid-cols-2 lg:w-[80%] xl:grid-cols-3">
-        <RoomCard />
+
+      <section className="mx-auto my-10 w-[90%] md:my-14 lg:w-[80%]">
+        <h1 className="mb-10 text-center text-xl font-semibold md:text-start md:text-3xl">
+          Explore Amaizing Rooms
+        </h1>
+        <div className="grid grid-cols-1 justify-items-center gap-10 md:grid-cols-2 xl:grid-cols-3">
+          <RoomCard />
+        </div>
       </section>
     </>
   );

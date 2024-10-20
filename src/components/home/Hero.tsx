@@ -16,7 +16,7 @@ const Hero: React.FC = () => {
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-60">
           <div className="text-center text-xl font-bold text-white md:text-3xl lg:text-5xl xl:text-6xl">
             <p>Helping You Find The Most</p>
-            <p className="py-2 md:py-5 lg:py-7 xl:py-14">Comfortable Place</p>
+            <p className="py-2 md:py-5 lg:py-7 xl:py-12">Comfortable Place</p>
           </div>
           <div>
             <p className="mx-4 text-balance pt-4 text-center text-xs text-gray-300 sm:text-lg lg:text-xl xl:text-2xl">
