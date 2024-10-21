@@ -3,3 +3,6 @@ export type RoomPageProps = {
     id: string;
   };
 };
+export type ModalBodyProps= {
+  modal: React.ReactNode;
+}
