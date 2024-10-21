@@ -1,10 +1,7 @@
+import { CardCloseProps } from "@/types/all-types";
 import { CircleX } from "lucide-react";
 
-interface BookingModalProps {
-  onClose: () => void;
-}
-
-const BookingModal: React.FC<BookingModalProps> = ({ onClose }) => {
+const BookingModal: React.FC<CardCloseProps> = ({ onClose }) => {
   return (
     <div className="relative w-96 rounded-lg bg-background p-8 shadow-lg">
       <div

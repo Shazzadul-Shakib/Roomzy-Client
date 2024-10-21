@@ -1,3 +1,8 @@
+"use client";
+
+import RoomUploadCard from "@/components/modalCard/CreateNewRoomCard";
+import ModalBody from "@/components/shared/modalbody";
+import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -6,13 +11,25 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Settings2 } from "lucide-react";
+import useToggle from "@/hooks/useToggle";
+import { Settings2, SquarePlus } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-const page: React.FC = () => {
+const Page: React.FC = () => {
+  const [isOpen, toggle] = useToggle();
+
   return (
     <div className="mx-auto w-[80%]">
+      <div className="mb-2 flex w-full items-center justify-end">
+        <Button
+          onClick={toggle}
+          variant="secondary"
+          className="flex items-center justify-center gap-2"
+        >
+          <SquarePlus /> <p>Add New Room</p>
+        </Button>
+      </div>
       <Table>
         <TableHeader>
           <TableRow>
@@ -54,8 +71,9 @@ const page: React.FC = () => {
           </TableRow>
         </TableBody>
       </Table>
+      {isOpen && <ModalBody modal={<RoomUploadCard onClose={toggle} />} />}
     </div>
   );
 };
 
-export default page;
+export default Page;
