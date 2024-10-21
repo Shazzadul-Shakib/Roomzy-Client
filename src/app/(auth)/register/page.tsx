@@ -1,19 +1,10 @@
-"use client"
+"use client";
 
 import Link from "next/link";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-
-// Zod schema for validation
-const registerSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  email: z.string().min(1, "Email is required").email("Invalid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-});
-
-// Define the form data type using Zod's inference
-type RegisterFormData = z.infer<typeof registerSchema>;
+import { RegisterFormData } from "@/types/all-types";
+import { registerSchema } from "@/validation/RegisterSchema";
 
 const Register: React.FC = () => {
   const {
@@ -26,7 +17,6 @@ const Register: React.FC = () => {
 
   const onSubmit = (data: RegisterFormData) => {
     console.log("Form Data: ", data);
-    // Handle form submission, such as calling an API
   };
 
   return (

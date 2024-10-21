@@ -1,4 +1,5 @@
 import { loginSchema } from "@/validation/LoginSchema";
+import { registerSchema } from "@/validation/RegisterSchema";
 import { z } from "zod";
 
 export type RoomPageProps = {
@@ -20,3 +21,4 @@ export type FormValues = {
   amenities: string;
 };
 export type LoginFormData = z.infer<typeof loginSchema>;
+export type RegisterFormData = z.infer<typeof registerSchema>;
