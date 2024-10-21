@@ -18,12 +18,12 @@ import { usePathname } from "next/navigation";
 const items = [
   {
     title: "Manage Booking",
-    url: "bookings",
+    url: "/dashboard/bookings",
     icon: Home,
   },
   {
     title: "Manage Rooms",
-    url: "rooms",
+    url: "/dashboard/rooms",
     icon: SquareKanban,
   },
 ];

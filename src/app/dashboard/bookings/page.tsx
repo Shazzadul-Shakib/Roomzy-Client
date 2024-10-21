@@ -16,7 +16,6 @@ import BookingModal from "@/components/modalCard/BookingStatusUpdateCard";
 
 const BookingsPage: React.FC = () => {
   const [isOpen, toggle] = useToggle();
-  console.log(isOpen)
   return (
     <div>
       <Table>
@@ -65,7 +64,7 @@ const BookingsPage: React.FC = () => {
           </TableRow>
         </TableBody>
       </Table>
-      {isOpen && <ModalBody modal={<BookingModal onClose={toggle}/>} />}
+      {isOpen && <ModalBody modal={<BookingModal onClose={toggle} />} />}
     </div>
   );
 };
