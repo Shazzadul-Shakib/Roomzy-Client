@@ -1,3 +1,5 @@
+import { DatePickerWithRange } from "./DatePicker";
+
 const RoomDetails: React.FC = () => {
   return (
     <div className="rounded-lg bg-white p-6 shadow-md md:p-10">
@@ -32,6 +34,14 @@ const RoomDetails: React.FC = () => {
           <li className="rounded-lg bg-gray-100 px-3 py-1">CCTV</li>
           <li className="rounded-lg bg-gray-100 px-3 py-1">Washing Machine</li>
         </ul>
+      </div>
+
+      {/* Date picker */}
+      <div className="mt-6 space-y-2 md:mt-8">
+        <h1 className="pb-4 text-xl font-semibold text-gray-900 md:text-3xl">
+          Select Check in and check out date
+        </h1>
+        <DatePickerWithRange />
       </div>
 
       {/* Book Now Button */}
