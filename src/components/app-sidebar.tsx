@@ -1,4 +1,5 @@
-import { Calendar, Home, Inbox, Search, Settings } from "lucide-react";
+"use client";
+import { SquareKanban, Home } from "lucide-react";
 
 import {
   Sidebar,
@@ -10,47 +11,42 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import Logo from "./logo/Logo";
+import { usePathname } from "next/navigation";
 
 // Menu items.
 const items = [
   {
-    title: "Home",
-    url: "#",
+    title: "Manage Booking",
+    url: "bookings",
     icon: Home,
   },
   {
-    title: "Inbox",
-    url: "#",
-    icon: Inbox,
-  },
-  {
-    title: "Calendar",
-    url: "#",
-    icon: Calendar,
-  },
-  {
-    title: "Search",
-    url: "#",
-    icon: Search,
-  },
-  {
-    title: "Settings",
-    url: "#",
-    icon: Settings,
+    title: "Manage Rooms",
+    url: "rooms",
+    icon: SquareKanban,
   },
 ];
 
 export function AppSidebar() {
+  const pathname = usePathname();
   return (
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
-          <SidebarGroupContent>
+          <SidebarGroupLabel>
+            <div className="flex items-center">
+              <Logo />
+            </div>
+          </SidebarGroupLabel>
+          <SidebarGroupContent className="my-4">
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
+                  <SidebarMenuButton
+                    asChild
+                    isActive={pathname.includes(item.url)}
+                  >
                     <a href={item.url}>
                       <item.icon />
                       <span>{item.title}</span>
