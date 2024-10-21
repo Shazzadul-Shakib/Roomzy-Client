@@ -1,12 +1,40 @@
+"use client"
+
 import Link from "next/link";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+// Zod schema for validation
+const registerSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  email: z.string().min(1, "Email is required").email("Invalid email address"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+});
+
+// Define the form data type using Zod's inference
+type RegisterFormData = z.infer<typeof registerSchema>;
 
 const Register: React.FC = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<RegisterFormData>({
+    resolver: zodResolver(registerSchema),
+  });
+
+  const onSubmit = (data: RegisterFormData) => {
+    console.log("Form Data: ", data);
+    // Handle form submission, such as calling an API
+  };
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100">
       <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-md">
         <h1 className="mb-8 text-center text-2xl font-semibold">Register</h1>
 
-        <form>
+        <form onSubmit={handleSubmit(onSubmit)}>
           {/* Name Field */}
           <div className="mb-4">
             <label
@@ -18,11 +46,13 @@ const Register: React.FC = () => {
             <input
               type="text"
               id="name"
-              name="name"
+              {...register("name")}
               className="mt-1 w-full rounded-lg border-gray-300 p-2 focus:border-blue-500 focus:ring-blue-500"
               placeholder="Your name"
-              required
             />
+            {errors.name && (
+              <p className="mt-1 text-sm text-red-500">{errors.name.message}</p>
+            )}
           </div>
 
           {/* Email Field */}
@@ -36,11 +66,15 @@ const Register: React.FC = () => {
             <input
               type="email"
               id="email"
-              name="email"
+              {...register("email")}
               className="mt-1 w-full rounded-lg border-gray-300 p-2 focus:border-blue-500 focus:ring-blue-500"
               placeholder="Your email"
-              required
             />
+            {errors.email && (
+              <p className="mt-1 text-sm text-red-500">
+                {errors.email.message}
+              </p>
+            )}
           </div>
 
           {/* Password Field */}
@@ -54,11 +88,15 @@ const Register: React.FC = () => {
             <input
               type="password"
               id="password"
-              name="password"
+              {...register("password")}
               className="mt-1 w-full rounded-lg border-gray-300 p-2 focus:border-blue-500 focus:ring-blue-500"
               placeholder="Your password"
-              required
             />
+            {errors.password && (
+              <p className="mt-1 text-sm text-red-500">
+                {errors.password.message}
+              </p>
+            )}
           </div>
 
           {/* Submit Button */}
