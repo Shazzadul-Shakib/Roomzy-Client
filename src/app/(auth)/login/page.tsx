@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema } from "@/validation/LoginSchema";
 import { LoginFormData } from "@/types/all-types";
+import { loginUser } from "@/lib/actions/login";
 
 const Login: React.FC = () => {
   const {
@@ -14,8 +15,13 @@ const Login: React.FC = () => {
     resolver: zodResolver(loginSchema),
   });
 
-  const onSubmit = (data: LoginFormData) => {
-    console.log("Form Data: ", data);
+  const onSubmit = async(data: LoginFormData) => {
+    const response= await loginUser(data);
+    if (response.success) {
+      console.log("Registration successful");
+    } else {
+      console.log("Registration failed: ", response.error);
+    }
   };
 
   return (

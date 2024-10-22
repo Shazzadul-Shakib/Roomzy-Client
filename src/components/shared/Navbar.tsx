@@ -1,14 +1,9 @@
 "use client";
 import Link from "next/link";
 import Logo from "../logo/Logo";
-import { usePathname } from "next/navigation";
 // import { CgProfile } from "react-icons/cg";
 
 const Navbar: React.FC = () => {
-  const pathname = usePathname(); // Get the current path
-
-  // Conditionally render Navbar only if path is not /dashboard
-  if (pathname.includes("dashboard")) return null;
   return (
     <div className="fixed left-0 right-0 top-0 z-10 mx-auto flex w-[90%] items-center justify-between rounded-lg bg-black/30 px-2 py-4 backdrop-blur-md lg:w-[80%]">
       {/* Logo on the left */}
