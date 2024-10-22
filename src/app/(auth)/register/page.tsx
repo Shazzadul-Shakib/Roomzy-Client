@@ -5,8 +5,11 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { RegisterFormData } from "@/types/all-types";
 import { registerSchema } from "@/validation/RegisterSchema";
+import { registerUser } from "@/lib/actions/register";
+import { useRouter } from "next/navigation";
 
 const Register: React.FC = () => {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -15,8 +18,15 @@ const Register: React.FC = () => {
     resolver: zodResolver(registerSchema),
   });
 
-  const onSubmit = (data: RegisterFormData) => {
-    console.log("Form Data: ", data);
+  const onSubmit = async (data: RegisterFormData) => {
+    const response = await registerUser(data);
+
+    if (response.success) {
+      console.log("Registration successful");
+      router.push("/login");
+    } else {
+      console.log("Registration failed: ", response.error);
+    }
   };
 
   return (

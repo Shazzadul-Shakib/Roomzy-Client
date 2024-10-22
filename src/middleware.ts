@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 // Define protected paths
-const protectedPaths = ["/rooms", "/dashboard"];
+const protectedPaths = ["/rooms"];
 
 export function middleware(request: NextRequest) {
   const token = request.cookies.get("auth_token");
@@ -23,5 +23,5 @@ export function middleware(request: NextRequest) {
 
 // Specify which paths this middleware applies to
 export const config = {
-  matcher: ["/rooms/:path*", "/dashboard/:path*"],
+  matcher: ["/rooms/:path*"],
 };
