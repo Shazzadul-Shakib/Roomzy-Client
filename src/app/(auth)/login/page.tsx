@@ -5,9 +5,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema } from "@/validation/LoginSchema";
 import { LoginFormData } from "@/types/all-types";
 import { loginUser } from "@/lib/actions/login";
-// import { redirect } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const Login: React.FC = () => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl") || "/";
+  
+  const [loginSuccessful, setLoginSuccessful] = useState(false);
+  
   const {
     register,
     handleSubmit,
@@ -17,13 +24,21 @@ const Login: React.FC = () => {
   });
 
   const onSubmit = async (data: LoginFormData) => {
-   const response= await loginUser(data);
-   if(!!response.error){
+    const response = await loginUser(data);
+    console.log("Login response:", response);
 
-   }else{
-    // redirect("/")
-   }
+    if (response && !response.error) {
+      setLoginSuccessful(true); // Set a flag for successful login
+    } else {
+      console.error("Login error:", response?.error);
+    }
   };
+
+  useEffect(() => {
+    if (loginSuccessful) {
+      router.push(callbackUrl); // Redirect on successful login
+    }
+  }, [loginSuccessful, callbackUrl, router]);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100">
@@ -34,10 +49,7 @@ const Login: React.FC = () => {
           <form onSubmit={handleSubmit(onSubmit)}>
             {/* Email Field */}
             <div className="mb-4">
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-gray-700"
-              >
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                 Email
               </label>
               <input
@@ -47,19 +59,12 @@ const Login: React.FC = () => {
                 className="mt-1 w-full rounded-lg border-gray-300 p-2 focus:border-blue-500 focus:ring-blue-500"
                 placeholder="Your email"
               />
-              {errors.email && (
-                <p className="mt-1 text-sm text-red-500">
-                  {errors.email.message}
-                </p>
-              )}
+              {errors.email && <p className="mt-1 text-sm text-red-500">{errors.email.message}</p>}
             </div>
 
             {/* Password Field */}
             <div className="mb-6">
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-gray-700"
-              >
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
                 Password
               </label>
               <input
@@ -69,11 +74,7 @@ const Login: React.FC = () => {
                 className="mt-1 w-full rounded-lg border-gray-300 p-2 focus:border-blue-500 focus:ring-blue-500"
                 placeholder="Your password"
               />
-              {errors.password && (
-                <p className="mt-1 text-sm text-red-500">
-                  {errors.password.message}
-                </p>
-              )}
+              {errors.password && <p className="mt-1 text-sm text-red-500">{errors.password.message}</p>}
             </div>
 
             {/* Submit Button */}
@@ -91,10 +92,7 @@ const Login: React.FC = () => {
         {/* Register Link */}
         <p className="mt-6 text-center text-sm text-gray-600">
           Don&apos;t have an account?{" "}
-          <Link
-            href="/register"
-            className="font-semibold text-blue-500 hover:text-blue-600"
-          >
+          <Link href="/register" className="font-semibold text-blue-500 hover:text-blue-600">
             Register
           </Link>
         </p>

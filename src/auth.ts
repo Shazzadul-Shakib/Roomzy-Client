@@ -1,8 +1,10 @@
 import NextAuth from "next-auth";
-import Credentials from "next-auth/providers/credentials";
+import CredentialsProvider from "next-auth/providers/credentials"
 import { connectToMongoDB } from "./lib/db";
 import User from "./models/user.model";
 import bcrypt from "bcryptjs";
+import { authConfig } from "./auth.config";
+
 
 export const {
   handlers: { GET, POST },
@@ -11,11 +13,13 @@ export const {
   signOut,
 } = NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
-  session: {
-    strategy: "jwt",
-  },
+  ...authConfig,
   providers: [
-    Credentials({
+      CredentialsProvider({
+      credentials: {
+        email: { },
+        password: { },
+      },
       async authorize(credentials) {
         if (credentials === null) return null;
         try {
