@@ -1,10 +1,14 @@
 import NextAuth from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials"
+import CredentialsProvider from "next-auth/providers/credentials";
 import { connectToMongoDB } from "./lib/db";
 import User from "./models/user.model";
 import bcrypt from "bcryptjs";
 import { authConfig } from "./auth.config";
+import { AdapterUser } from "next-auth/adapters";
 
+interface UserWithRole extends AdapterUser {
+  role: "Admin" | "User";
+}
 
 export const {
   handlers: { GET, POST },
@@ -15,13 +19,13 @@ export const {
   secret: process.env.NEXTAUTH_SECRET,
   ...authConfig,
   providers: [
-      CredentialsProvider({
+    CredentialsProvider({
       credentials: {
-        email: { },
-        password: { },
+        email: {},
+        password: {},
       },
       async authorize(credentials) {
-        if (credentials === null) return null;
+        if (!credentials) return null;
         try {
           await connectToMongoDB();
           const user = await User.findOne({ email: credentials.email });
@@ -31,7 +35,10 @@ export const {
               user.password as string,
             );
             if (isOk) {
-              return user;
+              return {
+                ...user.toObject(), // Convert mongoose document to plain object
+                role: user.role, // Ensure role is included
+              } as UserWithRole;
             } else {
               throw new Error("Check your password");
             }
@@ -44,4 +51,17 @@ export const {
       },
     }),
   ],
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        const userWithRole = user as UserWithRole;
+        token.role = userWithRole.role || "User";
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      session.user.role = (token.role as "Admin" | "User") || "User"; // Corrected role assignment
+      return session;
+    },
+  },
 });

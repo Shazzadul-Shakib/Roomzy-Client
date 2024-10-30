@@ -1,16 +1,18 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import NextAuth from "next-auth";
-import { authConfig } from "./auth.config";
-
-const { auth } = NextAuth(authConfig);
+import { getToken } from "next-auth/jwt"; // Import getToken
 
 // Define protected paths
-const protectedPaths = ["/rooms"];
+const protectedPaths = ["/dashboard", "/rooms"];
 
 export async function middleware(request: NextRequest) {
   try {
-    const session = await auth();
+    // Retrieve the token directly from the request
+    const token = await getToken({
+      req: request,
+      secret: process.env.NEXTAUTH_SECRET,
+    });
+    console.log("Token in middleware:", token); // Log the token for debugging
 
     // Check if the requested path is protected
     const isProtectedPath = protectedPaths.some((path) =>
@@ -18,11 +20,19 @@ export async function middleware(request: NextRequest) {
     );
 
     // If the path is protected and the user is not authenticated
-    if (isProtectedPath && !session?.user) {
-      // Redirect to login with a callback URL to return after login
+    if (isProtectedPath && !token) {
       const loginUrl = new URL("/login", request.url);
       loginUrl.searchParams.set("callbackUrl", request.nextUrl.pathname);
       return NextResponse.redirect(loginUrl);
+    }
+
+    // Check if user is trying to access the dashboard
+    if (
+      request.nextUrl.pathname.startsWith("/dashboard") &&
+      token?.role !== "Admin" // Use token to check role
+    ) {
+      // Redirect to a forbidden page or login
+      return NextResponse.redirect(new URL("/login", request.url));
     }
 
     // If user is authenticated or the path is not protected, continue
@@ -36,5 +46,5 @@ export async function middleware(request: NextRequest) {
 
 // Specify which paths this middleware applies to
 export const config = {
-  matcher: ["/rooms/:path*"],
+  matcher: ["/dashboard/:path*", "/rooms/:path*"],
 };

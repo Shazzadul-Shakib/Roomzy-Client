@@ -22,3 +22,9 @@ export type FormValues = {
 };
 export type LoginFormData = z.infer<typeof loginSchema>;
 export type RegisterFormData = z.infer<typeof registerSchema>;
+export interface User {
+  name: string;
+  email: string;
+  role: "Admin" | "User";
+  password: string;
+}

@@ -7,7 +7,6 @@ import { logout } from "@/lib/actions/logout";
 const Navbar: React.FC = async () => {
   const session = await auth();
   const user = session?.user;
-
   return (
     <div className="fixed left-0 right-0 top-0 z-10 mx-auto flex w-[90%] items-center justify-between rounded-lg bg-black/30 px-2 py-4 backdrop-blur-md lg:w-[80%]">
       {/* Logo on the left */}

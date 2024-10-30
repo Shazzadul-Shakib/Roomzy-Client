@@ -1,7 +1,8 @@
 import { connectToMongoDB } from "@/lib/db";
+import { User } from "@/types/all-types";
 import { Schema, model, models } from "mongoose";
 
-const UserRegisterSchema = new Schema(
+const UserRegisterSchema = new Schema<User>(
   {
     name: String,
     email: { type: String, unique: true },
